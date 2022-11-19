@@ -4,6 +4,7 @@ import {Photo} from "@capacitor/camera";
 import {HttpClient} from '@angular/common/http';
 import {ReceiptVerboseEncodedResponse, TaggunService} from "../services/taggun.service";
 import {Preferences} from "@capacitor/preferences";
+import {Router} from "@angular/router";
 
 @Component({
 	selector: 'app-scanner',
@@ -18,6 +19,7 @@ export class ScannerPage implements OnInit {
 
 	constructor(
 		public photoService: PhotoService,
+		private router: Router,
 		private http: HttpClient,
 		private taggun: TaggunService,
 	) {
@@ -46,16 +48,18 @@ export class ScannerPage implements OnInit {
 
 						this.taggun.doReceiptVerboseEncoded(photoBase64, photo.format)
 							.subscribe((response) => {
-								this.isScanning = false
+								this.isScanning = false;
 
 								let receiptItems = this.parseReceiptItems(response);
 
 								console.log(response, receiptItems);
 
-								return Preferences.set({
+								 Preferences.set({
 									key: this.RECEIPT_ITEMS_KEY,
 									value: JSON.stringify(receiptItems),
 								});
+
+								this.router.navigate(['/receipt-items']);
 							})
 					});
 			})

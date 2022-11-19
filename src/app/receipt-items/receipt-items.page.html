@@ -1,0 +1,20 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-title>Lista kompostowalnych produktów:</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div *ngFor="let item of receiptItems; index as position">
+		<ion-fab-button (click)="delete(position)">
+			<ion-icon name="close-outline"></ion-icon>
+		</ion-fab-button>
+		#{{ position }}: {{ item.name }} {{ item.weight }}
+	</div>
+
+	<ion-fab vertical="bottom" horizontal="center" slot="fixed">
+		<ion-fab-button [routerLink]="'/scanner'">
+			<ion-icon name="close-outline"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>
