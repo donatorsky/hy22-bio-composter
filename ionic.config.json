@@ -1,0 +1,7 @@
+{
+  "name": "hy22-bio-composter",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
