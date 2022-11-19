@@ -1,0 +1,46 @@
+.navbar {
+	background: #353D38;
+	height: 96px;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+	position: relative;
+}
+
+.navbar__button {
+	width: 40%;
+	height: 100%;
+	text-align: center;
+	color: #ECFBE9;
+	box-sizing: border-box;
+	padding: 20px 0 0 0;
+}
+
+.navbar__button > a {
+	color: #ECFBE9;
+	text-decoration: none;
+}
+
+.navbar__button-left {
+	float: left;
+}
+
+.navbar__button-right {
+	float: right;
+}
+
+.navbar__scanner {
+	width: 88px;
+	height: 88px;
+	border: 12px solid #fff;
+	border-radius: 44px;
+	box-sizing: border-box;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	text-align: center;
+	top: -44px;
+	background: #CEECC8;
+	padding-top: 22px;
+}

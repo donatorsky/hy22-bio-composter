@@ -1,0 +1,39 @@
+.progressbar {
+	padding-top: 20px;
+}
+
+.progressbar__red {
+	background: #FB5B5B;
+	height: 24px;
+	float: left;
+	position: relative;
+	color: #fff;
+	border-bottom-left-radius: 8px;
+	border-top-left-radius: 8px;
+	font-weight: bold;
+	padding: 2px 0 0 6px;
+	box-sizing: border-box;
+	min-width: 20%!important;
+	max-width: 80%!important;
+}
+
+.progressbar__green {
+	background: #79D36B;
+	height: 24px;
+	float: left;
+	color: #fff;
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: 8px;
+	font-weight: bold;
+	padding: 2px 6px 0 0;
+	text-align: right;
+	box-sizing: border-box;
+	min-width: 20%!important;
+	max-width: 80%!important;
+}
+
+.progressbar__emoji {
+	position: absolute;
+	right: -20px;
+	top: -10px
+}
