@@ -17,6 +17,9 @@ import {NavbarComponent} from "../navbar/navbar.component";
 		IonicModule,
 		HomePageRoutingModule
 	],
+	exports: [
+		HeaderComponent
+	],
 	declarations: [HomePage, HeaderComponent, ProgressbarComponent, NavbarComponent]
 })
 export class HomePageModule {

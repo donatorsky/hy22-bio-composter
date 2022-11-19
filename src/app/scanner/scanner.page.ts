@@ -5,28 +5,6 @@ import {HttpClient} from '@angular/common/http';
 import {ReceiptVerboseEncodedResponse, TaggunService} from "../services/taggun.service";
 import {Preferences} from "@capacitor/preferences";
 import {Router} from "@angular/router";
-import {CameraPreviewOptions, CameraPreviewPictureOptions} from '@awesome-cordova-plugins/camera-preview/ngx';
-
-// camera options (Size and location). In the following example, the preview uses the rear camera and display the preview in the back of the webview
-const cameraPreviewOpts: CameraPreviewOptions = {
-	x: 0,
-	y: 0,
-	width: window.screen.width,
-	height: window.screen.height,
-	camera: 'rear',
-	tapPhoto: true,
-	previewDrag: true,
-	toBack: true,
-	alpha: 1,
-	storeToFile: false,
-}
-
-// picture options
-const pictureOpts: CameraPreviewPictureOptions = {
-	width: 1280,
-	height: 1280,
-	quality: 85
-}
 
 @Component({
 	selector: 'app-scanner',
@@ -40,21 +18,14 @@ export class ScannerPage implements OnInit {
 	isScanning: boolean = false;
 
 	constructor(
+		public photoService: PhotoService,
 		private router: Router,
-		// private cameraPreview: CameraPreview,
-		private photoService: PhotoService,
 		private http: HttpClient,
 		private taggun: TaggunService,
 	) {
 	}
 
 	ngOnInit() {
-		// console.log(this.cameraPreview);
-		// // start camera
-		// this.cameraPreview.startCamera(cameraPreviewOpts).then(
-		// 	(res) => console.log,
-		// 	(err) => console.error,
-		// );
 	}
 
 	private readonly RECEIPT_START_REGEX = /PARAGON\s+FISKALNY\s*(.+)\s*SPRZEDAŻ\s*OPODATKOWANA/mius;

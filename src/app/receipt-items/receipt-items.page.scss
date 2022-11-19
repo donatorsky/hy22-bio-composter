@@ -1,0 +1,44 @@
+ion-content {
+	--ion-background-color: #CEECC8;
+}
+
+#container {
+	padding: 0 20px;
+	position: relative;
+	height: 100%;
+}
+
+.receipt-list__item {
+	height: 80px;
+	background: #ECFBE9;
+	border-radius: 30px;
+	display: flex;
+	padding: 16px;
+	margin-bottom: 8px;
+	position: relative;
+}
+
+.receipt-list__item__icon {
+	float: left;
+}
+
+.receipt-list__item__name {
+	float: left;
+	margin: 0 0 0 10px;
+}
+
+.receipt-list__item__delete {
+	position: absolute;
+	right: 14px;
+	top: 25px;
+}
+
+.receipt-list__button {
+	background: #353D38;
+	width: calc(100% - 2 * 20px);
+	border-radius: 30px;
+	height: 80px;
+	color: #ECFBE9;
+	position: absolute;
+	bottom: 20px;
+}
