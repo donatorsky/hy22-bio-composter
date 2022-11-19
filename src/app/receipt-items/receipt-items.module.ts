@@ -7,16 +7,16 @@ import {IonicModule} from '@ionic/angular';
 import {ReceiptItemsPageRoutingModule} from './receipt-items-routing.module';
 
 import {ReceiptItemsPage} from './receipt-items.page';
-import {HomePageModule} from "../home/home.module";
+import {HomePageModule} from '../home/home.module';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        ReceiptItemsPageRoutingModule,
-        HomePageModule
-    ],
+	imports: [
+		CommonModule,
+		FormsModule,
+		IonicModule,
+		ReceiptItemsPageRoutingModule,
+		HomePageModule
+	],
 	declarations: [ReceiptItemsPage]
 })
 export class ReceiptItemsPageModule {

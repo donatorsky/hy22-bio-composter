@@ -5,9 +5,9 @@ import {FormsModule} from '@angular/forms';
 import {HomePage} from './home.page';
 
 import {HomePageRoutingModule} from './home-routing.module';
-import {HeaderComponent} from "../header/header.component";
-import {ProgressbarComponent} from "../progressbar/progressbar.component";
-import {NavbarComponent} from "../navbar/navbar.component";
+import {HeaderComponent} from '../header/header.component';
+import {ProgressbarComponent} from '../progressbar/progressbar.component';
+import {NavbarComponent} from '../navbar/navbar.component';
 
 
 @NgModule({

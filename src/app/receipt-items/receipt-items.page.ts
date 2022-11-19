@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ReceiptItem} from "../scanner/scanner.page";
-import {Preferences} from "@capacitor/preferences";
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
+import {ReceiptItem, StorageService} from '../services/storage.service';
 
 @Component({
 	selector: 'app-receipt-items',
@@ -12,33 +11,23 @@ export class ReceiptItemsPage implements OnInit {
 
 	receiptItems: ReceiptItem[] = [];
 
-	private readonly RECEIPT_ITEMS_KEY: string = "receiptItems";
-
-	constructor(private router: Router) {
+	constructor(
+		private router: Router,
+		private storageService: StorageService,
+	) {
 	}
 
 	async ngOnInit() {
-		await Preferences
-			.get({
-				key: this.RECEIPT_ITEMS_KEY,
-			})
-			.then((v) => this.receiptItems = JSON.parse(v.value || '[]') || []);
+		this.receiptItems = this.storageService.getReceiptItems();
 	}
 
 	delete(index: number) {
-		this.receiptItems.splice(index, 1);
-
-		Preferences.set({
-			key: this.RECEIPT_ITEMS_KEY,
-			value: JSON.stringify(this.receiptItems),
-		})
+		return this.storageService.removeReceiptItemByIndex(index);
 	}
 
 	back() {
-		Preferences
-			.remove({
-				key: this.RECEIPT_ITEMS_KEY,
-			})
-			.then(() => this.router.navigate(['/scanner']));
+		return this.storageService
+			.clearReceiptItems()
+			.then(() => this.router.navigate(['/home']));
 	}
 }

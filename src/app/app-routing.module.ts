@@ -12,13 +12,9 @@ const routes: Routes = [
 		pathMatch: 'full'
 	},
 	{
-		path: 'scanner',
-		loadChildren: () => import('./scanner/scanner.module').then(m => m.ScannerPageModule)
+		path: 'receipt-items',
+		loadChildren: () => import('./receipt-items/receipt-items.module').then(m => m.ReceiptItemsPageModule)
 	},
-  {
-    path: 'receipt-items',
-    loadChildren: () => import('./receipt-items/receipt-items.module').then( m => m.ReceiptItemsPageModule)
-  },
 ];
 
 @NgModule({

@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-progressbar',
-  templateUrl: './progressbar.component.html',
-  styleUrls: ['./progressbar.component.scss'],
+	selector: 'app-progressbar',
+	templateUrl: './progressbar.component.html',
+	styleUrls: ['./progressbar.component.scss'],
 })
 export class ProgressbarComponent implements OnInit {
 	public _wastedValue: number = 30;
@@ -13,8 +13,10 @@ export class ProgressbarComponent implements OnInit {
 	}
 
 
-  constructor() { }
+	constructor() {
+	}
 
-  ngOnInit() {}
+	ngOnInit() {
+	}
 
 }

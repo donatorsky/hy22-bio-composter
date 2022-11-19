@@ -7,5 +7,5 @@
 	</div>
 </ion-content>
 <ion-footer>
-		<app-navbar></app-navbar>
+	<app-navbar (voted)="startScanning()" [style.display]="isScanning ? 'none' : ''"></app-navbar>
 </ion-footer>

@@ -6,7 +6,7 @@ export const environment = {
 	production: false,
 
 	taggun: {
-		apiKey: "30878ab0672a11edae52ab17ace764b5",
+		apiKey: '30878ab0672a11edae52ab17ace764b5',
 	},
 };
 

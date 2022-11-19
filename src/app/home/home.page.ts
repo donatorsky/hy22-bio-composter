@@ -1,4 +1,8 @@
 import {Component} from '@angular/core';
+import {ReceiptVerboseEncodedResponse, TaggunService} from '../services/taggun.service';
+import {ReceiptItem, StorageService} from '../services/storage.service';
+import {Router} from '@angular/router';
+import {PhotoService} from '../services/photo.service';
 
 @Component({
 	selector: 'app-home',
@@ -7,7 +11,88 @@ import {Component} from '@angular/core';
 })
 export class HomePage {
 
-	constructor() {
+	private readonly RECEIPT_START_REGEX = /PARAGON\s+FISKALNY\s*(.+)\s*SPRZEDAŻ\s*OPODATKOWANA/mius;
+	private readonly RECEIPT_ITEMS_REGEX = /^(?<name>.+?)\s+(?<weight>[\d,.]+)kg.?\s+\D?[\d,.]+\s+[\d,.]+\w?/gmi;
+
+	isScanning: boolean = false;
+
+	constructor(
+		private router: Router,
+		private storageService: StorageService,
+		private photoService: PhotoService,
+		private taggun: TaggunService,
+	) {
 	}
 
+	startScanning() {
+		this.photoService
+			.capturedPhoto()
+			.then((photo) => {
+				this.isScanning = true;
+
+				return photo;
+			})
+			.then((photo) => this.storageService.clearReceiptItems().then(() => photo))
+			.then((photo) =>
+				fetch(photo.webPath!)
+					.then(response => response.blob())
+					.then(this.convertBlobToBase64)
+					.then((photoBase64) => {
+						console.log(photo, photoBase64);
+
+						this.taggun.doReceiptVerboseEncoded(photoBase64, photo.format)
+							.subscribe((response) => {
+								this.isScanning = false;
+
+								let receiptItems = this.parseReceiptItems(response);
+
+								console.log(response, receiptItems);
+
+								return this.storageService
+									.setReceiptItems(receiptItems)
+									.then(() => this.router.navigate(['/receipt-items']));
+							})
+					}))
+			.catch(() => this.isScanning = false);
+	}
+
+	private convertBlobToBase64(blob: Blob): Promise<string> {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onerror = reject;
+			reader.onload = () => {
+				if (reader.result === null) {
+					return reject();
+				}
+
+				resolve(reader.result.toString().split(',').pop() as string);
+			};
+			reader.readAsDataURL(blob);
+		});
+	}
+
+	private parseReceiptItems(response: ReceiptVerboseEncodedResponse): ReceiptItem[] {
+		let regExpExecArray = this.RECEIPT_START_REGEX.exec(response.text.text);
+
+		if (regExpExecArray === null) {
+			return [];
+		}
+
+		console.log(regExpExecArray[1]);
+
+		let items: ReceiptItem[] = [], m;
+
+		while ((m = this.RECEIPT_ITEMS_REGEX.exec(regExpExecArray[1])) !== null) {
+			if (m.index === this.RECEIPT_ITEMS_REGEX.lastIndex) {
+				this.RECEIPT_ITEMS_REGEX.lastIndex++;
+			}
+
+			items.push(<ReceiptItem>{
+				name: m[1],
+				weight: parseFloat(m[2].replace(',', '.')),
+			})
+		}
+
+		return items;
+	}
 }
