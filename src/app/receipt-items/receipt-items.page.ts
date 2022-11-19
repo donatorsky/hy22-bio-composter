@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ReceiptItem} from "../scanner/scanner.page";
 import {Preferences} from "@capacitor/preferences";
+import {Router} from "@angular/router";
 
 @Component({
 	selector: 'app-receipt-items',
@@ -13,13 +14,15 @@ export class ReceiptItemsPage implements OnInit {
 
 	private readonly RECEIPT_ITEMS_KEY: string = "receiptItems";
 
-	constructor() {
+	constructor(private router: Router) {
 	}
 
-	ngOnInit() {
-		Preferences.get({
-			key: this.RECEIPT_ITEMS_KEY,
-		}).then((v) => this.receiptItems = JSON.parse(v.value || '[]') || []);
+	async ngOnInit() {
+		await Preferences
+			.get({
+				key: this.RECEIPT_ITEMS_KEY,
+			})
+			.then((v) => this.receiptItems = JSON.parse(v.value || '[]') || []);
 	}
 
 	delete(index: number) {
@@ -29,5 +32,13 @@ export class ReceiptItemsPage implements OnInit {
 			key: this.RECEIPT_ITEMS_KEY,
 			value: JSON.stringify(this.receiptItems),
 		})
+	}
+
+	back() {
+		Preferences
+			.remove({
+				key: this.RECEIPT_ITEMS_KEY,
+			})
+			.then(() => this.router.navigate(['/scanner']));
 	}
 }
