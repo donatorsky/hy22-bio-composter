@@ -6,27 +6,15 @@ import {Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 })
 export class PhotoService {
 
-	public photos: UserPhoto[] = [];
-
 	constructor() {
 	}
 
-	public async addNewToGallery() {
-		// Take a photo
-		const capturedPhoto = await Camera.getPhoto({
+	public async capturedPhoto() {
+		return await Camera.getPhoto({
 			resultType: CameraResultType.Uri,
 			source: CameraSource.Camera,
-			quality: 100
-		});
-
-		this.photos.unshift(<UserPhoto>{
-			filepath: "soon...",
-			webviewPath: capturedPhoto.webPath
+			correctOrientation: true,
+			quality: 100,
 		});
 	}
-}
-
-export interface UserPhoto {
-	filepath: string;
-	webviewPath: string;
 }
