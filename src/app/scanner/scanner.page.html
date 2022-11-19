@@ -14,10 +14,10 @@
 	<ion-img *ngIf="photo" [src]="photo.webPath"></ion-img>
 
 	<ion-fab vertical="bottom" horizontal="center" slot="fixed">
-		<ion-fab-button [routerLink]="'/home'">
+		<ion-fab-button [routerLink]="'/home'" [disabled]="isScanning">
 			<ion-icon name="close-outline"></ion-icon>
 		</ion-fab-button>
-		<ion-fab-button (click)="addPhotoToGallery()">
+		<ion-fab-button (click)="startScanning()" [disabled]="isScanning">
 			<ion-icon name="camera"></ion-icon>
 		</ion-fab-button>
 	</ion-fab>
