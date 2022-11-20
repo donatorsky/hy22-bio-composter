@@ -36,11 +36,15 @@ export class StorageService {
 				location: 'default'
 			})
 			.then((db: SQLiteObject) => {
-				db.executeSql(`create table wastes
+				db.
+				executeSql(`CREATE TABLE wastes
 											 (
-												 name   VARCHAR(64),
+												 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+												 name   TEXT,
 												 weight REAL,
-												 date   VARCHAR(12)
+												 waste REAL,
+												 status INTEGER,
+												 date   TEXT
 											 )`, [])
 					.then(() => console.log('Executed SQL'))
 					.catch(e => console.log(e));
@@ -100,11 +104,11 @@ export class StorageService {
 
 		const bindings: any[] = [];
 
-		this.receiptItems.forEach((item) => bindings.push(item.name, item.weight, new Date().toString()));
+		this.receiptItems.forEach((item) => bindings.push(item.name, item.weight, item.waste, new Date().toString()));
 
 		return this.dbConnection
-			?.executeSql(`INSERT INTO wastes("name", "weight", "date")
-										VALUES ${'(?, ?, ?),'.repeat(this.receiptItems.length-1) + '(?, ?, ?)'}`, bindings)
+			?.executeSql(`INSERT INTO wastes("name", "weight", "waste", "date")
+										VALUES ${'(?, ?, ?, ?),'.repeat(this.receiptItems.length-1) + '(?, ?, ?, ?)'}`, bindings)
 			.then(() => this.clearReceiptItems);
 	}
 
@@ -115,7 +119,7 @@ export class StorageService {
 			return Promise.reject();
 		}
 
-		return this.dbConnection.executeSql(`SELECT "name", "weight" FROM "wastes" ORDER BY "date" ASC`, [])
+		return this.dbConnection.executeSql(`SELECT "id", "name", "weight", "waste", "status", "date" FROM "wastes" WHERE "status" IS NULL`, [])
 			.then((response) => {
 				const items: ReceiptItem[] = []
 
@@ -124,9 +128,15 @@ export class StorageService {
 				for (let i = 0; i < response.rows.length; i++) {
 					const currentItem = response.rows.item(i);
 
+					console.log(currentItem)
+
 					items.push(<ReceiptItem>{
+						id: currentItem.id,
 						name: currentItem.name,
 						weight: currentItem.weight,
+						waste: currentItem.waste,
+						date: currentItem.date,
+						status: currentItem.status,
 					});
 				}
 
@@ -134,9 +144,47 @@ export class StorageService {
 			})
 			.catch(console.error);
 	}
+
+	public setStatus(id: number, status: number) {
+		if (!this.dbConnection) {
+			console.error('nie mam połączenia z bazą');
+			return Promise.reject();
+		}
+
+		return this.dbConnection.executeSql(`UPDATE "wastes" SET "status" = ? WHERE "id" = ?`, [status, id]);
+	}
+
+	public sumPositiveWastes() {
+		if (!this.dbConnection) {
+			console.error('nie mam połączenia z bazą');
+			return Promise.reject();
+		}
+
+		return this.dbConnection.executeSql(`SELECT SUM("waste") AS total FROM "wastes" WHERE status = ?`, [1]).
+			then((response) => {
+				return response.rows.item(0).total
+		})
+	}
+
+	public sumNegativeWastes() {
+		if (!this.dbConnection) {
+			console.error('nie mam połączenia z bazą');
+			return Promise.reject();
+		}
+
+		return this.dbConnection.executeSql(`SELECT SUM("waste") AS total FROM "wastes" WHERE status = ?`, [0]).
+			then((response) => {
+				return response.rows.item(0).total
+		})
+	}
+
 }
 
 export interface ReceiptItem {
+	id: number;
 	name: string;
 	weight: number;
+	waste: number;
+	status: boolean;
+	date: string;
 }

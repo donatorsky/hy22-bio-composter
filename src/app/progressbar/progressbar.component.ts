@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ReceiptItem, StorageService} from "../services/storage.service";
 
 @Component({
 	selector: 'app-progressbar',
@@ -6,13 +7,21 @@ import {Component, Input, OnInit} from '@angular/core';
 	styleUrls: ['./progressbar.component.scss'],
 })
 export class ProgressbarComponent implements OnInit {
-	public _wastedValue: number = 30;
+	public _sumPositiveWaste: number = 0;
 	@Input()
-	set wastedValue(v: number) {
-		this._wastedValue = v
+	set sumPositiveWaste(v: number) {
+		this._sumPositiveWaste = v
+		this.sum = v + this._sumNegativeWaste
 	}
 
+	public _sumNegativeWaste: number = 0;
+	@Input()
+	set sumNegativeWaste(v: number) {
+		this._sumNegativeWaste = v
+		this.sum = v + this._sumPositiveWaste
+	}
 
+	public sum: number = 0
 	constructor() {
 	}
 

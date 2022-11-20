@@ -14,6 +14,9 @@ export class HomePage {
 	private readonly RECEIPT_START_REGEX = /PARAGON\s+FISKALNY\s*(.+)\s*SPRZEDAŻ\s*OPODATKOWANA/mius;
 	private readonly RECEIPT_ITEMS_REGEX = /^(?<name>.+?)\s+(?<weight>[\d,.]+)kg.?\s+\D?[\d,.]+\s+[\d,.]+\w?/gmi;
 
+	public sumPositiveWaste: number = 0
+	public sumNegativeWaste: number = 0
+
 	isScanning: boolean = false;
 	items: ReceiptItem[] = [];
 
@@ -31,6 +34,12 @@ export class HomePage {
 	ionViewWillEnter() {
 		this.storageService.fetchReceiptItems()
 			.then(v => this.items = v as ReceiptItem[])
+
+		this.storageService.sumPositiveWastes()
+			.then(v => this.sumPositiveWaste = v)
+
+		this.storageService.sumNegativeWastes()
+			.then(v => this.sumNegativeWaste = v)
 	}
 
 	startScanning() {
@@ -63,6 +72,13 @@ export class HomePage {
 							})
 					}))
 			.catch(() => this.isScanning = false);
+	}
+
+	public setStatus(id: number, status: number) {
+		this.storageService.setStatus(id, status).
+			then(() => this.storageService.sumPositiveWastes().then(v => this.sumPositiveWaste = v)).
+			then(() => this.storageService.sumNegativeWastes().then(v => this.sumNegativeWaste = v)).
+			then(()=>this.items.pop())
 	}
 
 	private convertBlobToBase64(blob: Blob): Promise<string> {
@@ -99,6 +115,7 @@ export class HomePage {
 			items.push(<ReceiptItem>{
 				name: m[1],
 				weight: parseFloat(m[2].replace(',', '.')),
+				waste: parseFloat(m[2].replace(',', '.'))*0.1,
 			})
 		}
 

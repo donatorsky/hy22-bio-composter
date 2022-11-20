@@ -1,3 +1,69 @@
 #container {
 	padding: 0 20px;
+
+}
+
+.list {
+	margin: 50px 0 0 0;
+	position: relative;
+}
+
+.list__item {
+	width: 100%;
+	clear: both;
+	margin: 0 0 20px 0;
+	height: 364px;
+	position: absolute;
+}
+
+.list__item__center {
+	width: 70%;
+	float: left;
+	background: #FFF1E3;
+	height: 100%;
+	border-radius: 30px;
+	text-align: center;
+	-webkit-box-shadow: 0px 20px 20px -30px rgba(0, 0, 0, 1);
+	-moz-box-shadow: 0px 20px 20px -30px rgba(0, 0, 0, 1);
+	box-shadow: 0px 20px 20px -30px rgba(0, 0, 0, 1);
+	color: #353D38;
+}
+
+.list__item__center .name {
+	font-size: 18px;
+}
+
+.list__item__center .waste {
+	font-size: 14px;
+}
+
+.list__item__center .date {
+	font-size: 14px;
+	text-align: right;
+	margin-right: 24px;
+}
+
+.list__item__left {
+	width: 15%;
+	height: 64px;
+	float: left;
+	background: #FFE5E5;
+	border-bottom-left-radius: 24px;
+	border-top-left-radius: 24px;
+	text-align: center;
+	margin: 150px 0 0 0;
+	box-sizing: border-box;
+	padding-top: 20px;
+}
+
+.list__item__right {
+	width: 15%;
+	float: left;
+	height: 64px;
+	background: #D3FFCC;
+	border-bottom-right-radius: 24px;
+	border-top-right-radius: 24px;
+	text-align: center;
+	margin: 150px 0 0 0;
+	padding-top: 20px;
 }
