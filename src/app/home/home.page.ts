@@ -15,6 +15,7 @@ export class HomePage {
 	private readonly RECEIPT_ITEMS_REGEX = /^(?<name>.+?)\s+(?<weight>[\d,.]+)kg.?\s+\D?[\d,.]+\s+[\d,.]+\w?/gmi;
 
 	isScanning: boolean = false;
+	items: ReceiptItem[] = [];
 
 	constructor(
 		private router: Router,
@@ -22,6 +23,14 @@ export class HomePage {
 		private photoService: PhotoService,
 		private taggun: TaggunService,
 	) {
+	}
+
+	ngOnInit(){
+	}
+
+	ionViewWillEnter() {
+		this.storageService.fetchReceiptItems()
+			.then(v => this.items = v as ReceiptItem[])
 	}
 
 	startScanning() {

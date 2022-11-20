@@ -4,6 +4,10 @@
 <ion-content [fullscreen]="true">
 	<div id="container">
 		<app-progressbar [wastedValue]="70"></app-progressbar>
+
+		<div *ngFor="let item of items">
+			{{item.name}}<br>
+		</div>
 	</div>
 </ion-content>
 <ion-footer>
